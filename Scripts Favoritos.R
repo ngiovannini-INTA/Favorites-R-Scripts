@@ -33,7 +33,7 @@ datosV <-read.csv("C:/Dropbox/DATA/PruebaVale.csv", sep=";", skip=2, header=TRUE
 write.table(wombat1, file = "TX_PC.dat", sep="\t", row.names = F, col.names = F, quote=F, na="0")
 
 
-# Leer datos pequeños pegados ---------------------------------------------
+# Leer datos pequeÃ±os pegados ---------------------------------------------
 data <- read.table(header=TRUE, text='
  subject sex control cond1 cond2
        1   M     7.9  12.3  10.7
@@ -156,9 +156,9 @@ ggplot(res.hcpc$call$X, aes(x=Dim.1, y=Dim.2, colour=clust, ellipses=clust))
 dev.off()
 
 
-# Caluculadora tamaño de muestra para anova con 2 grupos ------------------
-#calculo de tamaño muestral: usar potencia de 80% o mas. El calculo no considera los bloques, 
-#para hacerlo mas conservador calcular el número todal de repeticiones (trat x bloque) y restarle 
+# Caluculadora tamaÃ±o de muestra para anova con 2 grupos ------------------
+#calculo de tamaÃ±o muestral: usar potencia de 80% o mas. El calculo no considera los bloques, 
+#para hacerlo mas conservador calcular el nÃºmero todal de repeticiones (trat x bloque) y restarle 
 #algunas observaciones a cuenta de los grados de libertad que se come modelar los bloques.
 
 # http://powerandsamplesize.com/Calculators/Compare-2-Means/2-Sample-Equality
@@ -170,11 +170,11 @@ sd=3.6
 alpha=0.05
 beta=0.20 
 (nB=(1+1/kappa)*(sd*(qnorm(1-alpha/2)+qnorm(1-beta))/(muA-muB))^2)
-ceiling(nB) # Este es el tamaño de muestra mínimo
+ceiling(nB) # Este es el tamaÃ±o de muestra mÃ­nimo
 z=(muA-muB)/(sd*sqrt((1+1/kappa)/nB))
 (Power=pnorm(z-qnorm(1-alpha/2))+pnorm(-z-qnorm(1-alpha/2)))
 
-# Calculadora del tamaño de muestra para comparar k medias
+# Calculadora del tamaÃ±o de muestra para comparar k medias
 muA=35
 muB=30
 sd=10
@@ -235,5 +235,8 @@ makPD = function(A){
 makPD(prueba)
 
 
+#Correr BLUPF90 desde R ----------------------------------------------
 
-###Ver como redondear varias columnas al mismo tiempo
+setwd('c:/Drive/DOC/Tesis/Soft/Simulacion/AlphaSimR/blup3/')
+shell("renumf90 renum.par")
+shell("blupf90 renf90.par")
