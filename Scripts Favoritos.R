@@ -73,19 +73,21 @@ DL<-merge(data_long, data_long2, by = "momento")
 
 
 # Datos wide a Long -------------------------------------------------------
-data_long <- melt(datos, id.vars=c("ID", "Edad"), 
-                    measure.vars = c("CC32","CC0","CC35"), 
-                    variable.name="nCC",
-                    value.name="CC")
+library(tidyr)
 
-reshape(angora, direction='long', 
-                   varying=c('PV.1','PV.2','PV.3','PV.4','PV.5','PV.6','CC.1','CC.2','CC.3','CC.4','CC.5','CC.6'), 
-                   timevar='var',
-                   times=c('1','2','3','4','5','6'),
-                   v.names=c('PV', 'CC'),
-                   idvar='caravana')
+#wide to long
+dat_long <- pivot_longer(datos,
+                         cols = dia1:dia84,
+                         names_to = "dia", 
+                         values_to = "peso")
 
-reshape(VC_PC, idvar = "ID_WOMBAT", timevar = "TRAIT", direction = "wide")
+#long to wide
+dat_wide <- pivot_wider(dat_long,
+                        names_from = "dia",
+                        names_prefix = "dia",
+                        values_from = "peso")
+
+
 
 # Tablas cruzadas ---------------------------------------------------------
   #1 factor
