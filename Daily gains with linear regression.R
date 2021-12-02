@@ -1,15 +1,32 @@
-#Creo archivo de datos de ejemplo
-d <- data.frame(state=rep(c('NY', 'CA'), c(10, 10)),
-                year=rep(1:10, 2),
-                response=c(rnorm(10), rnorm(10)))
+library(tidyr)
 
-#Hago la regresión deseada
-modell<-by(d, d$state, function(d) lm(d$response ~ d$year))
+datos <- read.csv("C:/Users/giovannini.nicolas/Desktop/ADG.csv", sep=";")
 
-#sentencia para mostrar los coeficientes de regresión que la transpongo para una mejor edición a positeriori
-t(sapply(modell,coef))
+#wide to long
 
-#acá hice una prueba solo filtrando los datos de "NY" e hice la regresión para comprobar que estan bien hechos los cálculos
-d1 <- subset(d, state=='NY')
+dat_long <- pivot_longer(datos,
+                         cols = dia1:dia84,
+                         names_to = "dia", 
+                         values_to = "peso")
 
-lm(response ~ year,d1)
+#Genero la variable de tiempo (numerica para la regresion)
+dat_long$dia_n <- ifelse(dat_long$dia=='dia1',1,0)
+dat_long$dia_n <- ifelse(dat_long$dia=='dia14',14,dat_long$dia_n)
+dat_long$dia_n <- ifelse(dat_long$dia=='dia27',27,dat_long$dia_n)
+dat_long$dia_n <- ifelse(dat_long$dia=='dia42',42,dat_long$dia_n)
+dat_long$dia_n <- ifelse(dat_long$dia=='dia54',54,dat_long$dia_n)
+dat_long$dia_n <- ifelse(dat_long$dia=='dia70',70,dat_long$dia_n)
+dat_long$dia_n <- ifelse(dat_long$dia=='dia77',77,dat_long$dia_n)
+dat_long$dia_n <- ifelse(dat_long$dia=='dia84',84,dat_long$dia_n)
+
+
+#Hago la regresiÃ³n deseada
+dat_adg <- by(dat_long, dat_long$id, function(dat_long) lm(dat_long$peso ~ dat_long$dia_n))
+
+#sentencia para mostrar los coeficientes de regresiÃ³n que la transpongo para una mejor ediciÃ³n a posteriori
+t(sapply(dat_adg,coef))
+
+#acÃ¡ hice una prueba solo filtrando los datos de "id.1" e hice la regresiÃ³n para comprobar que estan bien hechos los cÃ¡lculos
+id1 <- subset(dat_long, id==1)
+
+lm(peso ~ dia_n,id1)
