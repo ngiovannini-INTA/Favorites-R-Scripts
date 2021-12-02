@@ -3,7 +3,6 @@ library(tidyr)
 datos <- read.csv("C:/Users/giovannini.nicolas/Desktop/ADG.csv", sep=";")
 
 #wide to long
-
 dat_long <- pivot_longer(datos,
                          cols = dia1:dia84,
                          names_to = "dia", 
@@ -21,12 +20,19 @@ dat_long$dia_n <- ifelse(dat_long$dia=='dia84',84,dat_long$dia_n)
 
 
 #Hago la regresión deseada
-dat_adg <- by(dat_long, dat_long$id, function(dat_long) lm(dat_long$peso ~ dat_long$dia_n))
+reg <- by(dat_long, dat_long$id, function(dat_long) lm(dat_long$peso ~ dat_long$dia_n))
 
 #sentencia para mostrar los coeficientes de regresión que la transpongo para una mejor edición a posteriori
-t(sapply(dat_adg,coef))
+dat_adg <- data.frame(t(sapply(reg,coef)))
 
-#acá hice una prueba solo filtrando los datos de "id.1" e hice la regresión para comprobar que estan bien hechos los cálculos
+#renombro las columnas
+colnames(dat_adg) <- c('int','ADG')
+dat_adg$id <- rownames(dat_adg)
+dat_adg <- dat_adg[,c('id','ADG')]
+
+#acá hice una prueba solo filtrando los datos de "id1" e hice la regresión para comprobar que estan bien hechos los cálculos
 id1 <- subset(dat_long, id==1)
-
 lm(peso ~ dia_n,id1)
+
+#Uno los archivos 
+datos1 <- merge(datos,dat_adg,by='id')
