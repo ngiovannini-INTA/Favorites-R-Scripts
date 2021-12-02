@@ -35,4 +35,4 @@ id1 <- subset(dat_long, id==1)
 lm(peso ~ dia_n,id1)
 
 #Uno los archivos 
-datos1 <- merge(datos,dat_adg,by='id')
+datos <- merge(datos,dat_adg,by='id')
