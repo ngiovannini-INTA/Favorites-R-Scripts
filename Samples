@@ -1,0 +1,7 @@
+#Row samples
+sample(dat$ID,25)
+
+#Dataframe samples
+library(dplyr)
+
+slice_sample(dat,prop=0.2)
