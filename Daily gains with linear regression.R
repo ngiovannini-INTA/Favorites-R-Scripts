@@ -1,3 +1,14 @@
+#Forma abreviada
+
+library(lme4)
+#formato de datos de GPV.csv (Anio;carav;TP;Sexo;PESO;Edad;Pesodia)
+gpv <- read.csv('E:/GPV.csv',sep=';')
+fits <- lmList(PESO ~ Edad | carav, data=gpv)
+fits2 <- coef(fits)
+
+write.table(fits2, file = 'E:/gpv_out.csv', sep=";", row.names = T, col.names = T, quote=F, na="", dec='.')
+
+#forma larga y complicada
 library(tidyr)
 
 datos <- read.csv("C:/Users/giovannini.nicolas/Desktop/ADG.csv", sep=";")
